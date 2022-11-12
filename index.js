@@ -16,12 +16,12 @@ app.get("/", async(req, res) => {
         if (data != null) {
             return res.json(JSON.parse(data))
         } else {
-            const data = fs.readFileSync('MOCK_DATA.txt', 'utf8')
+            data = fs.readFileSync('MOCK_DATA.txt', 'utf8')
             redisClient.setEx("data", DEFAULT_EXPIRATION, data)
-            return res.json(JSON.parse(data))
+            res.json(JSON.parse(data))
         }
+        res.json(JSON.parse(data))
     })
-    res.sendFile('MOCK_DATA.json', {root: __dirname})
 })
 
 app.listen(port, () => {
