@@ -7,7 +7,7 @@ const redisClient = Redis.createClient()
 redisClient.connect()
 
 port = 3000
-const DEFAULT_EXPIRATION = 600
+const DEFAULT_EXPIRATION = 5
 
 const app = express()
 app.use(cors())
