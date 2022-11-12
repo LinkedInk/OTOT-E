@@ -12,9 +12,8 @@ app.use(cors())
 
 app.get("/", async(req, res) => {
     // res.sendFile('mock_small.json', {root: __dirname})
-
     fs.readFile('MOCK_DATA.json', 'utf8', (err, data) => {
-        // redisClient.setEx("data", DEFAULT_EXPIRATION, data)
+        redisClient.setEx("data", DEFAULT_EXPIRATION, data)
         res.json(JSON.parse(data))
     })
 })
