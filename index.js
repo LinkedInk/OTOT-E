@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const fs = require('fs');
 const Redis = require('redis')
+var _ = require("underscore");
 const redisClient = Redis.createClient()
 redisClient.connect()
 
@@ -15,13 +16,14 @@ app.get("/", async(req, res) => {
     console.log(`req recv`)
     data = await redisClient.get('data')
     if (data != null) {
-        console.log(`cache hit`)
         return res.json(JSON.parse(data))
     } else {
         console.log(`cache miss`)
         data = fs.readFileSync('MOCK_DATA.json', 'utf8')
-        redisClient.setEx('data', DEFAULT_EXPIRATION, data)
-        return res.json(JSON.parse(data))
+        var photos = JSON.parse(data);
+        var filtered = _.where(photos, {"albumId": 1});
+        redisClient.setEx('data', DEFAULT_EXPIRATION, JSON.stringify(filtered))
+        return res.json(filtered)
     }
 })
 
